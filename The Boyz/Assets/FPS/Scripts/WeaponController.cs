@@ -21,6 +21,8 @@ public struct CrosshairData
 [RequireComponent(typeof(AudioSource))]
 public class WeaponController : MonoBehaviour
 {
+    public bool noCooldownEnabled = false;
+
     [Header("Information")]
     [Tooltip("The name that will be displayed in the UI for this weapon")]
     public string weaponName;
@@ -123,7 +125,17 @@ public class WeaponController : MonoBehaviour
 
     void UpdateAmmo()
     {
-        if (m_LastTimeShot + ammoReloadDelay < Time.time && m_CurrentAmmo < maxAmmo && !isCharging)
+        if (noCooldownEnabled)
+        {
+            // reloads weapon over time
+            m_CurrentAmmo += ammoReloadRate * Time.deltaTime;
+
+            // limits ammo to max value
+            m_CurrentAmmo = Mathf.Clamp(m_CurrentAmmo, 0, maxAmmo);
+
+            isCooling = true;
+        }
+        else if (m_LastTimeShot + ammoReloadDelay < Time.time && m_CurrentAmmo < maxAmmo && !isCharging)
         {
             // reloads weapon over time
             m_CurrentAmmo += ammoReloadRate * Time.deltaTime;

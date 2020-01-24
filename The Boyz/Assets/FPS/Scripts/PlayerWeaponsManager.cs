@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -508,5 +509,17 @@ public class PlayerWeaponsManager : MonoBehaviour
         {
             newWeapon.ShowWeapon(true);
         }
+    }
+
+
+    public void NoCooldownStart(int time)
+    {
+        StartCoroutine(NoCooldownStop(time));
+    }
+    public IEnumerator NoCooldownStop(int time)
+    {
+        weaponParentSocket.GetChild(1).GetComponent<WeaponController>().noCooldownEnabled = true;
+
+        yield return null;
     }
 }
