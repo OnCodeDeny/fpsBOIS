@@ -514,12 +514,17 @@ public class PlayerWeaponsManager : MonoBehaviour
 
     public void NoCooldownStart(int time)
     {
+        //Force refresh booster state by clearing possible current booster.
+        StopCoroutine("NoCooldownStop");
+
+        GetActiveWeapon().noCooldownEnabled = true;
+
+        //Start closing down sequence.
         StartCoroutine(NoCooldownStop(time));
     }
     public IEnumerator NoCooldownStop(int time)
     {
-        weaponParentSocket.GetChild(1).GetComponent<WeaponController>().noCooldownEnabled = true;
-
-        yield return null;
+        yield return new WaitForSeconds(time);
+        GetActiveWeapon().noCooldownEnabled = false;
     }
 }

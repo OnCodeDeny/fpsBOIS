@@ -17,15 +17,13 @@ public class NoCooldownBooster : MonoBehaviour
     {
         
     }
+
     private void OnTriggerEnter(Collider other)
     {
-
-        other.SendMessage("StartCoroutine(NoCooldownStart)", noCooldownTime, SendMessageOptions.DontRequireReceiver);
         if (other.gameObject.GetComponent<PlayerWeaponsManager>())
         {
-            StartCoroutine(other.gameObject.GetComponent<PlayerWeaponsManager>().NoCooldownStart(0));
-
+            other.gameObject.GetComponent<PlayerWeaponsManager>().NoCooldownStart(noCooldownTime);
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
     }
 }
