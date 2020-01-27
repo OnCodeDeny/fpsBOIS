@@ -4,6 +4,8 @@ using UnityEngine.Events;
 [RequireComponent(typeof(CharacterController), typeof(PlayerInputHandler), typeof(AudioSource))]
 public class PlayerCharacterController : MonoBehaviour
 {
+    CrosshairManager chManager;
+
     [Header("References")]
     [Tooltip("Reference to the main camera used for the player")]
     public Camera playerCamera;
@@ -120,6 +122,8 @@ public class PlayerCharacterController : MonoBehaviour
 
     void Start()
     {
+        chManager = GameObject.Find("GameHUD").GetComponent<CrosshairManager>();
+
         // fetch components on the same gameObject
         m_Controller = GetComponent<CharacterController>();
         DebugUtility.HandleErrorIfNullGetComponent<CharacterController, PlayerCharacterController>(m_Controller, this, gameObject);
@@ -262,11 +266,15 @@ public class PlayerCharacterController : MonoBehaviour
 
                 if (GetComponentInChildren<WeaponController>())
                     GetComponentInChildren<WeaponController>().isShootEnabled = false;
+
+                chManager.crosshairImage.enabled = false;
             }
             else
             {
                 if (GetComponentInChildren<WeaponController>())
                     GetComponentInChildren<WeaponController>().isShootEnabled = true;
+
+                chManager.crosshairImage.enabled = true;
             }
 
             float speedModifier = isSprinting ? sprintSpeedModifier : 1f;
