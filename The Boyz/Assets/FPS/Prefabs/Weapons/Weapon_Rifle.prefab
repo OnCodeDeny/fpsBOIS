@@ -135,6 +135,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2225486910712267856}
   - component: {fileID: 8323776800172828795}
+  - component: {fileID: 4732475408189113681}
   - component: {fileID: 8745372878802205896}
   - component: {fileID: 555188489432107117}
   - component: {fileID: 8090847488450120274}
@@ -190,7 +191,7 @@ MonoBehaviour:
   shootType: 0
   projectilePrefab: {fileID: 528546716365072993, guid: 2f98e699ee8f22949a0261b53cee97c2,
     type: 3}
-  delayBetweenShots: 0.25
+  delayBetweenShots: 0.2
   bulletSpreadAngle: 1.2
   bulletsPerShot: 1
   recoilForce: 1.1
@@ -206,6 +207,19 @@ MonoBehaviour:
     type: 3}
   shootSFX: {fileID: 8300000, guid: 53d2238f4c4b2aa4f8e559c7af9e0126, type: 3}
   changeWeaponSFX: {fileID: 8300000, guid: 7b83d61917ac1224f942a0609b1221f2, type: 3}
+--- !u!114 &4732475408189113681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2225486910712267859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4ab6c6ababfb1a4f8605eaaea546d89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentTriggerMode: 0
 --- !u!114 &8745372878802205896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1429,15 +1443,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21c8bd050f24da54285f8a3987ee6253, type: 3}
---- !u!4 &2772967909889388702 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5338991494728519494, guid: 21c8bd050f24da54285f8a3987ee6253,
-    type: 3}
-  m_PrefabInstance: {fileID: 7812733688514592728}
-  m_PrefabAsset: {fileID: 0}
 --- !u!198 &1818117475793052272 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 8455270613747015080, guid: 21c8bd050f24da54285f8a3987ee6253,
+    type: 3}
+  m_PrefabInstance: {fileID: 7812733688514592728}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2772967909889388702 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5338991494728519494, guid: 21c8bd050f24da54285f8a3987ee6253,
     type: 3}
   m_PrefabInstance: {fileID: 7812733688514592728}
   m_PrefabAsset: {fileID: 0}
