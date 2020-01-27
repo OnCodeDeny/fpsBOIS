@@ -21,6 +21,7 @@ public struct CrosshairData
 [RequireComponent(typeof(AudioSource))]
 public class WeaponController : MonoBehaviour
 {
+    public bool isShootEnabled = true;
     public bool noCooldownEnabled = false;
 
     [Header("Information")]
@@ -246,7 +247,8 @@ public class WeaponController : MonoBehaviour
     bool TryShoot()
     {
         if (m_CurrentAmmo >= 1f 
-            && m_LastTimeShot + delayBetweenShots < Time.time)
+            && m_LastTimeShot + delayBetweenShots < Time.time
+            && isShootEnabled)
         {
             HandleShoot();
             m_CurrentAmmo -= 1;

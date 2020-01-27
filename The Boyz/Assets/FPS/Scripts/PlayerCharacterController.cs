@@ -259,6 +259,14 @@ public class PlayerCharacterController : MonoBehaviour
             if (isSprinting)
             {
                 isSprinting = SetCrouchingState(false, false);
+
+                if (GetComponentInChildren<WeaponController>())
+                    GetComponentInChildren<WeaponController>().isShootEnabled = false;
+            }
+            else
+            {
+                if (GetComponentInChildren<WeaponController>())
+                    GetComponentInChildren<WeaponController>().isShootEnabled = true;
             }
 
             float speedModifier = isSprinting ? sprintSpeedModifier : 1f;
