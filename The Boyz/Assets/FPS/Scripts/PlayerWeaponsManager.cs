@@ -530,7 +530,6 @@ public class PlayerWeaponsManager : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
 
-        Debug.Log("here");
         foreach (WeaponController weapon in m_WeaponSlots)
         {
             if (weapon)

@@ -135,12 +135,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2225486910712267856}
   - component: {fileID: 8323776800172828795}
-  - component: {fileID: 4732475408189113681}
   - component: {fileID: 8745372878802205896}
   - component: {fileID: 555188489432107117}
   - component: {fileID: 8090847488450120274}
   m_Layer: 0
-  m_Name: Weapon_Rifle
+  m_Name: Weapon_SniperRifle
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -176,50 +175,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   noCooldownEnabled: 0
-  weaponName: Rifle
+  weaponName: SniperRifle
   weaponIcon: {fileID: 21300000, guid: 3c187e19c32c13542ba8a0c1a3a88ece, type: 3}
   crosshairDataDefault:
     crosshairSprite: {fileID: 21300000, guid: e881aa18189b12f4e915fc5b14ddc421, type: 3}
-    crosshairSize: 45
-    crosshairColor: {r: 0.21404415, g: 0.5052521, b: 0.6981132, a: 0.4}
+    crosshairSize: 50
+    crosshairColor: {r: 0.88490695, g: 0.20024922, b: 0.9433962, a: 0.4}
   crosshairDataTargetInSight:
     crosshairSprite: {fileID: 21300000, guid: e881aa18189b12f4e915fc5b14ddc421, type: 3}
-    crosshairSize: 37
-    crosshairColor: {r: 1, g: 0, b: 0, a: 1}
+    crosshairSize: 20
+    crosshairColor: {r: 0.8301887, g: 0.019579919, b: 0.019579919, a: 1}
   weaponRoot: {fileID: 1505447205160222267}
   weaponMuzzle: {fileID: 8334323006752503713}
   shootType: 0
-  projectilePrefab: {fileID: 528546716365072993, guid: 2f98e699ee8f22949a0261b53cee97c2,
+  projectilePrefab: {fileID: 528546716365072993, guid: 3c676e61bfc845a4696d9a5887219640,
     type: 3}
-  delayBetweenShots: 0.2
-  bulletSpreadAngle: 1.2
+  delayBetweenShots: 0.7
+  bulletSpreadAngle: 2.2
   bulletsPerShot: 1
-  recoilForce: 1.1
-  aimZoomRatio: 0.41
+  recoilForce: 1.46
+  aimZoomRatio: 0.28
   aimOffset: {x: 0, y: 0.075, z: 0}
-  ammoReloadRate: 10
-  ammoReloadDelay: 1.2
-  maxAmmo: 20
-  maxChargeDuration: 2
+  ammoReloadRate: 7
+  ammoReloadDelay: 1.5
+  maxAmmo: 9
+  maxChargeDuration: 3
   ammoUsedOnStartCharge: 1
   ammoUsageRateWhileCharging: 2
   muzzleFlashPrefab: {fileID: 748781637555137343, guid: 9f671b22f25370048a18fb1f821294ec,
     type: 3}
   shootSFX: {fileID: 8300000, guid: 53d2238f4c4b2aa4f8e559c7af9e0126, type: 3}
   changeWeaponSFX: {fileID: 8300000, guid: 7b83d61917ac1224f942a0609b1221f2, type: 3}
---- !u!114 &4732475408189113681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2225486910712267859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4ab6c6ababfb1a4f8605eaaea546d89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentTriggerMode: 0
 --- !u!114 &8745372878802205896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,7 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   steamVFX: {fileID: 1818117475793052272}
-  steamVFXEmissionRateMax: 13
+  steamVFXEmissionRateMax: 19
   overheatGradient:
     serializedVersion: 2
     key0: {r: 0, g: 2.6398654, b: 0, a: 1}
@@ -1443,15 +1429,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21c8bd050f24da54285f8a3987ee6253, type: 3}
---- !u!198 &1818117475793052272 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 8455270613747015080, guid: 21c8bd050f24da54285f8a3987ee6253,
-    type: 3}
-  m_PrefabInstance: {fileID: 7812733688514592728}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2772967909889388702 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5338991494728519494, guid: 21c8bd050f24da54285f8a3987ee6253,
+    type: 3}
+  m_PrefabInstance: {fileID: 7812733688514592728}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1818117475793052272 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8455270613747015080, guid: 21c8bd050f24da54285f8a3987ee6253,
     type: 3}
   m_PrefabInstance: {fileID: 7812733688514592728}
   m_PrefabAsset: {fileID: 0}
