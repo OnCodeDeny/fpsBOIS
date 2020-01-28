@@ -4,44 +4,29 @@ using UnityEngine;
 
 public class Rifle : MonoBehaviour
 {
-    public enum TriggerMode
-    {
-        Single,
-        //Duo,
-        Burst,
-    }
-
-    public TriggerMode currentTriggerMode;
-
-    WeaponController currentController;
+    WeaponController controller;
 
     // Start is called before the first frame update
     void Start()
     {
-        currentController = GetComponent<WeaponController>(); 
+        controller = GetComponent<WeaponController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("TriggerModeSwitch"))
+        if (Input.GetButtonDown("TriggerModeSwitch") && GetComponentInParent<PlayerWeaponsManager>().GetActiveWeapon() == controller)
         {
-            if (currentTriggerMode == TriggerMode.Burst)
+            if (controller.shootType == WeaponShootType.Burst)
             {
-                currentTriggerMode = TriggerMode.Single;
+                controller.delayBetweenShots = 0.2f;
+                controller.shootType = WeaponShootType.Manual;
             }
             else
             {
-                currentTriggerMode++;
+                controller.delayBetweenShots = 0.08f;
+                controller.shootType = WeaponShootType.Burst;
             }
-        }
-        if (currentTriggerMode == TriggerMode.Single)
-        {
-            currentController.bulletsPerShot = 1;
-        }
-        else if (currentTriggerMode == TriggerMode.Burst)
-        {
-            currentController.bulletsPerShot = 3;
         }
     }
 }
