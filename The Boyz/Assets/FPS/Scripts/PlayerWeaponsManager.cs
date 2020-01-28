@@ -517,7 +517,11 @@ public class PlayerWeaponsManager : MonoBehaviour
         //Force refresh booster state by clearing possible current booster.
         StopCoroutine("NoCooldownStop");
 
-        GetActiveWeapon().noCooldownEnabled = true;
+        foreach (WeaponController weapon in m_WeaponSlots)
+        {
+            if (weapon)
+                weapon.noCooldownEnabled = true;
+        }
 
         //Start closing down sequence.
         StartCoroutine(NoCooldownStop(time));
@@ -525,6 +529,12 @@ public class PlayerWeaponsManager : MonoBehaviour
     public IEnumerator NoCooldownStop(int time)
     {
         yield return new WaitForSeconds(time);
-        GetActiveWeapon().noCooldownEnabled = false;
+
+        Debug.Log("here");
+        foreach (WeaponController weapon in m_WeaponSlots)
+        {
+            if (weapon)
+                weapon.noCooldownEnabled = false;
+        }
     }
 }
