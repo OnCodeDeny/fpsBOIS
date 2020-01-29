@@ -5,6 +5,10 @@ using UnityEngine.Events;
 public class PlayerCharacterController : MonoBehaviour
 {
     CrosshairManager chManager;
+    GameObject weaponSocket;
+    Transform weaponRotationSprinting;
+    Transform weaponRotationWalking;
+
 
     [Header("References")]
     [Tooltip("Reference to the main camera used for the player")]
@@ -123,6 +127,9 @@ public class PlayerCharacterController : MonoBehaviour
     void Start()
     {
         chManager = GameObject.Find("GameHUD").GetComponent<CrosshairManager>();
+        weaponSocket = GameObject.Find("WeaponParentSocket");
+        weaponRotationWalking = GameObject.Find("WeaponPosition(Walking)").transform;
+        weaponRotationSprinting = GameObject.Find("WeaponPosition(Sprinting)").transform;
 
         // fetch components on the same gameObject
         m_Controller = GetComponent<CharacterController>();
@@ -268,6 +275,8 @@ public class PlayerCharacterController : MonoBehaviour
                     GetComponentInChildren<WeaponController>().isShootEnabled = false;
 
                 chManager.crosshairImage.enabled = false;
+
+                weaponSocket.transform.rotation = Quaternion.Lerp(weaponSocket.transform.rotation, weaponRotationSprinting.rotation, Time.deltaTime * 7.5f);
             }
             else
             {
@@ -275,6 +284,8 @@ public class PlayerCharacterController : MonoBehaviour
                     GetComponentInChildren<WeaponController>().isShootEnabled = true;
 
                 chManager.crosshairImage.enabled = true;
+
+                weaponSocket.transform.rotation = Quaternion.Lerp(weaponSocket.transform.rotation, weaponRotationWalking.rotation, Time.deltaTime * 10.5f);
             }
 
             float speedModifier = isSprinting ? sprintSpeedModifier : 1f;
