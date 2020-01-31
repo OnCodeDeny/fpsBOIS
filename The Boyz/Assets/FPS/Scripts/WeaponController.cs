@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public enum WeaponShootType
 {
-    Burst,
     Manual,
     Automatic,
     Charge,
@@ -212,38 +210,10 @@ public class WeaponController : MonoBehaviour
         m_LastTimeShot = Time.time;
     }
 
-    int burstFireCount = 0;
-    bool burstFireStarted = false;
-
     public bool HandleShootInputs(bool inputDown, bool inputHeld, bool inputUp)
     {
         switch (shootType)
         {
-            case WeaponShootType.Burst:
-                if (!burstFireStarted && inputDown)
-                {
-                    if (TryShoot())
-                    {
-                        burstFireStarted = true;
-                        burstFireCount++;
-                        return true;
-                    }
-                }
-                else if (burstFireStarted && burstFireCount < 3)
-                {
-                    if (TryShoot())
-                    {
-                        burstFireCount++;
-                        return true;
-                    }
-                }
-                if (burstFireCount >= 3)
-                {
-                    burstFireStarted = false;
-                    burstFireCount = 0;
-                }
-                return false;
-
             case WeaponShootType.Manual:
                 if (inputDown)
                 {
@@ -272,21 +242,6 @@ public class WeaponController : MonoBehaviour
             default:
                 return false;
         }
-    }
-
-    private IEnumerator BurstShoot(int shootCount)
-    {
-        for (int count = 0; count < shootCount; count++)
-        {
-            while (true)
-            {
-                if (TryShoot())
-                {
-                    break;
-                }
-            }
-        }
-        return null;
     }
 
     bool TryShoot()

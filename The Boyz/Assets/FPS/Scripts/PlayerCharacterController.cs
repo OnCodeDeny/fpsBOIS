@@ -244,8 +244,6 @@ public class PlayerCharacterController : MonoBehaviour
         }
     }
 
-    int jumpCount;
-
     void HandleCharacterMovement()
     {
         // horizontal character rotation
@@ -298,7 +296,6 @@ public class PlayerCharacterController : MonoBehaviour
             // handle grounded movement
             if (isGrounded)
             {
-                jumpCount = 0;
                 // calculate the desired velocity from inputs, max speed, and current slope
                 Vector3 targetVelocity = worldspaceMoveInput * maxSpeedOnGround * speedModifier;
                 // reduce speed if crouching by crouch speed ratio
@@ -312,7 +309,6 @@ public class PlayerCharacterController : MonoBehaviour
                 // jumping
                 if (isGrounded && m_InputHandler.GetJumpInputDown())
                 {
-                    jumpCount++;
                     // force the crouch state to false
                     if (SetCrouchingState(false, false))
                     {
@@ -349,31 +345,6 @@ public class PlayerCharacterController : MonoBehaviour
             // handle air movement
             else
             {
-                if (m_InputHandler.GetJumpInputDown() && jumpCount < 2)
-                {
-                    jumpCount++;
-                    // force the crouch state to false
-                    if (SetCrouchingState(false, false))
-                    {
-                        // start by canceling out the vertical component of our velocity
-                        characterVelocity = new Vector3(characterVelocity.x, 0f, characterVelocity.z);
-
-                        // then, add the jumpSpeed value upwards
-                        characterVelocity += Vector3.up * jumpForce;
-
-                        // play sound
-                        audioSource.PlayOneShot(jumpSFX);
-
-                        // remember last time we jumped because we need to prevent snapping to ground for a short time
-                        m_LastTimeJumped = Time.time;
-                        hasJumpedThisFrame = true;
-
-                        // Force grounding to false
-                        isGrounded = false;
-                        m_GroundNormal = Vector3.up;
-                    }
-                }
-
                 // add air acceleration
                 characterVelocity += worldspaceMoveInput * accelerationSpeedInAir * Time.deltaTime;
 
