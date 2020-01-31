@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public enum WeaponShootType
 {
+    Burst,
     Manual,
     Automatic,
     Charge,
@@ -21,6 +23,8 @@ public struct CrosshairData
 [RequireComponent(typeof(AudioSource))]
 public class WeaponController : MonoBehaviour
 {
+    public bool noCooldownEnabled = false;
+
     [Header("Information")]
     [Tooltip("The name that will be displayed in the UI for this weapon")]
     public string weaponName;
@@ -123,7 +127,17 @@ public class WeaponController : MonoBehaviour
 
     void UpdateAmmo()
     {
-        if (m_LastTimeShot + ammoReloadDelay < Time.time && m_CurrentAmmo < maxAmmo && !isCharging)
+        if (noCooldownEnabled)
+        {
+            // reloads weapon over time
+            m_CurrentAmmo += ammoReloadRate * Time.deltaTime;
+
+            // limits ammo to max value
+            m_CurrentAmmo = Mathf.Clamp(m_CurrentAmmo, 0, maxAmmo);
+
+            isCooling = true;
+        }
+        else if (m_LastTimeShot + ammoReloadDelay < Time.time && m_CurrentAmmo < maxAmmo && !isCharging)
         {
             // reloads weapon over time
             m_CurrentAmmo += ammoReloadRate * Time.deltaTime;
@@ -197,10 +211,38 @@ public class WeaponController : MonoBehaviour
         m_LastTimeShot = Time.time;
     }
 
+    int burstFireCount = 0;
+    bool burstFireStarted = false;
+
     public bool HandleShootInputs(bool inputDown, bool inputHeld, bool inputUp)
     {
         switch (shootType)
         {
+            case WeaponShootType.Burst:
+                if (!burstFireStarted && inputDown)
+                {
+                    if (TryShoot())
+                    {
+                        burstFireStarted = true;
+                        burstFireCount++;
+                        return true;
+                    }
+                }
+                else if (burstFireStarted && burstFireCount < 3)
+                {
+                    if (TryShoot())
+                    {
+                        burstFireCount++;
+                        return true;
+                    }
+                }
+                if (burstFireCount >= 3)
+                {
+                    burstFireStarted = false;
+                    burstFireCount = 0;
+                }
+                return false;
+
             case WeaponShootType.Manual:
                 if (inputDown)
                 {
@@ -229,6 +271,21 @@ public class WeaponController : MonoBehaviour
             default:
                 return false;
         }
+    }
+
+    private IEnumerator BurstShoot(int shootCount)
+    {
+        for (int count = 0; count < shootCount; count++)
+        {
+            while (true)
+            {
+                if (TryShoot())
+                {
+                    break;
+                }
+            }
+        }
+        return null;
     }
 
     bool TryShoot()

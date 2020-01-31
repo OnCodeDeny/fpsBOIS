@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -507,6 +508,32 @@ public class PlayerWeaponsManager : MonoBehaviour
         if (newWeapon != null)
         {
             newWeapon.ShowWeapon(true);
+        }
+    }
+
+
+    public void NoCooldownStart(int time)
+    {
+        //Force refresh booster state by clearing possible current booster.
+        StopCoroutine("NoCooldownStop");
+
+        foreach (WeaponController weapon in m_WeaponSlots)
+        {
+            if (weapon)
+                weapon.noCooldownEnabled = true;
+        }
+
+        //Start closing down sequence.
+        StartCoroutine(NoCooldownStop(time));
+    }
+    public IEnumerator NoCooldownStop(int time)
+    {
+        yield return new WaitForSeconds(time);
+
+        foreach (WeaponController weapon in m_WeaponSlots)
+        {
+            if (weapon)
+                weapon.noCooldownEnabled = false;
         }
     }
 }
