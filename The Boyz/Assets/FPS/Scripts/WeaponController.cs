@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public enum WeaponShootType
 {
-    Burst,
     Manual,
     Automatic,
     Charge,
@@ -23,6 +21,7 @@ public struct CrosshairData
 [RequireComponent(typeof(AudioSource))]
 public class WeaponController : MonoBehaviour
 {
+    public bool isShootEnabled = true;
     public bool noCooldownEnabled = false;
 
     [Header("Information")]
@@ -211,38 +210,10 @@ public class WeaponController : MonoBehaviour
         m_LastTimeShot = Time.time;
     }
 
-    int burstFireCount = 0;
-    bool burstFireStarted = false;
-
     public bool HandleShootInputs(bool inputDown, bool inputHeld, bool inputUp)
     {
         switch (shootType)
         {
-            case WeaponShootType.Burst:
-                if (!burstFireStarted && inputDown)
-                {
-                    if (TryShoot())
-                    {
-                        burstFireStarted = true;
-                        burstFireCount++;
-                        return true;
-                    }
-                }
-                else if (burstFireStarted && burstFireCount < 3)
-                {
-                    if (TryShoot())
-                    {
-                        burstFireCount++;
-                        return true;
-                    }
-                }
-                if (burstFireCount >= 3)
-                {
-                    burstFireStarted = false;
-                    burstFireCount = 0;
-                }
-                return false;
-
             case WeaponShootType.Manual:
                 if (inputDown)
                 {
@@ -273,25 +244,11 @@ public class WeaponController : MonoBehaviour
         }
     }
 
-    private IEnumerator BurstShoot(int shootCount)
-    {
-        for (int count = 0; count < shootCount; count++)
-        {
-            while (true)
-            {
-                if (TryShoot())
-                {
-                    break;
-                }
-            }
-        }
-        return null;
-    }
-
     bool TryShoot()
     {
         if (m_CurrentAmmo >= 1f 
-            && m_LastTimeShot + delayBetweenShots < Time.time)
+            && m_LastTimeShot + delayBetweenShots < Time.time
+            && isShootEnabled)
         {
             HandleShoot();
             m_CurrentAmmo -= 1;
