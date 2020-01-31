@@ -4,12 +4,6 @@ using UnityEngine.Events;
 [RequireComponent(typeof(CharacterController), typeof(PlayerInputHandler), typeof(AudioSource))]
 public class PlayerCharacterController : MonoBehaviour
 {
-    CrosshairManager chManager;
-    GameObject weaponSocket;
-    Transform weaponRotationSprinting;
-    Transform weaponRotationWalking;
-
-
     [Header("References")]
     [Tooltip("Reference to the main camera used for the player")]
     public Camera playerCamera;
@@ -126,11 +120,6 @@ public class PlayerCharacterController : MonoBehaviour
 
     void Start()
     {
-        chManager = GameObject.Find("GameHUD").GetComponent<CrosshairManager>();
-        weaponSocket = GameObject.Find("WeaponParentSocket");
-        weaponRotationWalking = GameObject.Find("WeaponPosition(Walking)").transform;
-        weaponRotationSprinting = GameObject.Find("WeaponPosition(Sprinting)").transform;
-
         // fetch components on the same gameObject
         m_Controller = GetComponent<CharacterController>();
         DebugUtility.HandleErrorIfNullGetComponent<CharacterController, PlayerCharacterController>(m_Controller, this, gameObject);
@@ -244,6 +233,8 @@ public class PlayerCharacterController : MonoBehaviour
         }
     }
 
+    int jumpCount;
+
     void HandleCharacterMovement()
     {
         // horizontal character rotation
@@ -270,22 +261,6 @@ public class PlayerCharacterController : MonoBehaviour
             if (isSprinting)
             {
                 isSprinting = SetCrouchingState(false, false);
-
-                if (GetComponentInChildren<WeaponController>())
-                    GetComponentInChildren<WeaponController>().isShootEnabled = false;
-
-                chManager.crosshairImage.enabled = false;
-
-                weaponSocket.transform.rotation = Quaternion.Lerp(weaponSocket.transform.rotation, weaponRotationSprinting.rotation, Time.deltaTime * 7.5f);
-            }
-            else
-            {
-                if (GetComponentInChildren<WeaponController>())
-                    GetComponentInChildren<WeaponController>().isShootEnabled = true;
-
-                chManager.crosshairImage.enabled = true;
-
-                weaponSocket.transform.rotation = Quaternion.Lerp(weaponSocket.transform.rotation, weaponRotationWalking.rotation, Time.deltaTime * 10.5f);
             }
 
             float speedModifier = isSprinting ? sprintSpeedModifier : 1f;
@@ -296,6 +271,7 @@ public class PlayerCharacterController : MonoBehaviour
             // handle grounded movement
             if (isGrounded)
             {
+                jumpCount = 0;
                 // calculate the desired velocity from inputs, max speed, and current slope
                 Vector3 targetVelocity = worldspaceMoveInput * maxSpeedOnGround * speedModifier;
                 // reduce speed if crouching by crouch speed ratio
@@ -309,6 +285,7 @@ public class PlayerCharacterController : MonoBehaviour
                 // jumping
                 if (isGrounded && m_InputHandler.GetJumpInputDown())
                 {
+                    jumpCount++;
                     // force the crouch state to false
                     if (SetCrouchingState(false, false))
                     {
@@ -345,6 +322,31 @@ public class PlayerCharacterController : MonoBehaviour
             // handle air movement
             else
             {
+                if (m_InputHandler.GetJumpInputDown() && jumpCount < 2)
+                {
+                    jumpCount++;
+                    // force the crouch state to false
+                    if (SetCrouchingState(false, false))
+                    {
+                        // start by canceling out the vertical component of our velocity
+                        characterVelocity = new Vector3(characterVelocity.x, 0f, characterVelocity.z);
+
+                        // then, add the jumpSpeed value upwards
+                        characterVelocity += Vector3.up * jumpForce;
+
+                        // play sound
+                        audioSource.PlayOneShot(jumpSFX);
+
+                        // remember last time we jumped because we need to prevent snapping to ground for a short time
+                        m_LastTimeJumped = Time.time;
+                        hasJumpedThisFrame = true;
+
+                        // Force grounding to false
+                        isGrounded = false;
+                        m_GroundNormal = Vector3.up;
+                    }
+                }
+
                 // add air acceleration
                 characterVelocity += worldspaceMoveInput * accelerationSpeedInAir * Time.deltaTime;
 
