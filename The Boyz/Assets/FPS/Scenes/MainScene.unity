@@ -5161,6 +5161,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: b55e1038335a5ce429d5657c15587773,
         type: 3}
+    - target: {fileID: 1281487490479878388, guid: c996b53e9f849234393d1e90f68d1679,
+        type: 3}
+      propertyPath: crouchingSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 22341619bf996164fb82df6cb60e2878,
+        type: 3}
     - target: {fileID: 7447037400027147435, guid: c996b53e9f849234393d1e90f68d1679,
         type: 3}
       propertyPath: m_Color.r
