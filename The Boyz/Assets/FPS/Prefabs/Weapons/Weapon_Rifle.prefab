@@ -179,11 +179,11 @@ MonoBehaviour:
   weaponName: Rifle
   weaponIcon: {fileID: 21300000, guid: d4c3515e13a6bff40b86f681e1ea440a, type: 3}
   crosshairDataDefault:
-    crosshairSprite: {fileID: 21300000, guid: 5fcd9172957bce84c82cdf4a6678a37d, type: 3}
+    crosshairSprite: {fileID: 21300000, guid: 0103502112bfb4442816fceaaa0fc33b, type: 3}
     crosshairSize: 45
     crosshairColor: {r: 1, g: 1, b: 1, a: 1}
   crosshairDataTargetInSight:
-    crosshairSprite: {fileID: 21300000, guid: 5fcd9172957bce84c82cdf4a6678a37d, type: 3}
+    crosshairSprite: {fileID: 21300000, guid: 0103502112bfb4442816fceaaa0fc33b, type: 3}
     crosshairSize: 37
     crosshairColor: {r: 0.8396226, g: 0.08317016, b: 0.08317016, a: 1}
   weaponRoot: {fileID: 1505447205160222267}
