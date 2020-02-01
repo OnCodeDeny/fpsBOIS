@@ -4,6 +4,11 @@ using UnityEngine.Events;
 [RequireComponent(typeof(CharacterController), typeof(PlayerInputHandler), typeof(AudioSource))]
 public class PlayerCharacterController : MonoBehaviour
 {
+    CrosshairManager chManager;
+    GameObject weaponSocket;
+    Transform weaponRotationSprinting;
+    Transform weaponRotationWalking;
+
     [Header("References")]
     [Tooltip("Reference to the main camera used for the player")]
     public Camera playerCamera;
@@ -120,6 +125,11 @@ public class PlayerCharacterController : MonoBehaviour
 
     void Start()
     {
+        chManager = GameObject.Find("GameHUD").GetComponent<CrosshairManager>();
+        weaponSocket = GameObject.Find("WeaponParentSocket");
+        weaponRotationWalking = GameObject.Find("WeaponPosition(Walking)").transform;
+        weaponRotationSprinting = GameObject.Find("WeaponPosition(Sprinting)").transform;
+
         // fetch components on the same gameObject
         m_Controller = GetComponent<CharacterController>();
         DebugUtility.HandleErrorIfNullGetComponent<CharacterController, PlayerCharacterController>(m_Controller, this, gameObject);
@@ -261,6 +271,20 @@ public class PlayerCharacterController : MonoBehaviour
             if (isSprinting)
             {
                 isSprinting = SetCrouchingState(false, false);
+
+                m_WeaponsManager.GetActiveWeapon().isShootEnabled = false;
+
+                chManager.crosshairImage.enabled = false;
+
+                weaponSocket.transform.rotation = Quaternion.Lerp(weaponSocket.transform.rotation, weaponRotationSprinting.rotation, Time.deltaTime * 7.5f);
+            }
+            else
+            {
+                m_WeaponsManager.GetActiveWeapon().isShootEnabled = true;
+
+                chManager.crosshairImage.enabled = true;
+
+                weaponSocket.transform.rotation = Quaternion.Lerp(weaponSocket.transform.rotation, weaponRotationWalking.rotation, Time.deltaTime * 10.5f);
             }
 
             float speedModifier = isSprinting ? sprintSpeedModifier : 1f;
