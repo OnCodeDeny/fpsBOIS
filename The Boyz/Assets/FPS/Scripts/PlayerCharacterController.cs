@@ -272,8 +272,7 @@ public class PlayerCharacterController : MonoBehaviour
             {
                 isSprinting = SetCrouchingState(false, false);
 
-                if (GetComponentInChildren<WeaponController>())
-                    GetComponentInChildren<WeaponController>().isShootEnabled = false;
+                m_WeaponsManager.GetActiveWeapon().isShootEnabled = false;
 
                 chManager.crosshairImage.enabled = false;
 
@@ -281,8 +280,7 @@ public class PlayerCharacterController : MonoBehaviour
             }
             else
             {
-                if (GetComponentInChildren<WeaponController>())
-                    GetComponentInChildren<WeaponController>().isShootEnabled = true;
+                m_WeaponsManager.GetActiveWeapon().isShootEnabled = true;
 
                 chManager.crosshairImage.enabled = true;
 
