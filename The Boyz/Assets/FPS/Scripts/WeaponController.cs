@@ -23,6 +23,7 @@ public struct CrosshairData
 [RequireComponent(typeof(AudioSource))]
 public class WeaponController : MonoBehaviour
 {
+    public ParticleSystem[] bulletParticles;
     public bool isShootEnabled = true;
     public bool noCooldownEnabled = false;
 
@@ -335,6 +336,8 @@ public class WeaponController : MonoBehaviour
 
     void HandleShoot()
     {
+        ShootVFX();
+
         // spawn all bullets with random direction
         for (int i = 0; i < bulletsPerShot; i++)
         {
@@ -365,5 +368,19 @@ public class WeaponController : MonoBehaviour
         Vector3 spreadWorldDirection = Vector3.Slerp(shootTransform.forward, UnityEngine.Random.insideUnitSphere, spreadAngleRatio);
 
         return spreadWorldDirection;
+    }
+
+    IEnumerable ShootVFX()
+    {
+        // play shoot VFX
+        for (int i = 0; i < bulletParticles.Length; i++)
+        {
+            bulletParticles[i].Play();
+        }
+        yield return new WaitForSeconds(.9f);
+        for (int i = 0; i < bulletParticles.Length; i++)
+        {
+            bulletParticles[i].Stop();
+        }
     }
 }
